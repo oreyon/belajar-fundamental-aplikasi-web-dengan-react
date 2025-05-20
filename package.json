@@ -1,0 +1,8 @@
+{
+	"name": "belajar-fundamental-aplikasi-web-dengan-react",
+	"private": true,
+	"version": "1.0.0",
+	"workspaces": [
+		"01-latihan-menambahkan-props-type-pada-component"
+	]
+}
