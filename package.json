@@ -5,6 +5,7 @@
 	"workspaces": [
 		"01-latihan-menambahkan-props-type-pada-component",
 		"02-studi-kasus-prop-types-contact-apps",
-		"03-spa-practice"
+		"03-spa-practice",
+		"04-react-router-dom"
 	]
 }
