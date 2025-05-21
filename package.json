@@ -6,6 +6,7 @@
 		"01-latihan-menambahkan-props-type-pada-component",
 		"02-studi-kasus-prop-types-contact-apps",
 		"03-spa-practice",
-		"04-react-router-dom"
+		"04-react-router-dom",
+		"05-query-parameter"
 	]
 }
