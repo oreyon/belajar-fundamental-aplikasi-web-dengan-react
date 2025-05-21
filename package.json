@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "1.0.0",
 	"workspaces": [
-		"01-latihan-menambahkan-props-type-pada-component"
+		"01-latihan-menambahkan-props-type-pada-component",
+		"02-studi-kasus-prop-types-contact-apps"
 	]
 }
