@@ -4,14 +4,11 @@ import MovieList from './MovieComponent/MovieList';
 import SearchBar from './MovieComponent/SearchBar';
 
 interface PropTypes {
-	match: {
-		params: {
-			id: number;
-		};
-	};
+	onSearch: (keyword: string) => void;
+	activeKeyword?: string;
 }
 
-class SearchPage extends React.Component {
+class SearchPage extends React.Component<PropTypes> {
 	constructor(props: PropTypes) {
 		super(props);
 
@@ -27,11 +24,11 @@ class SearchPage extends React.Component {
 	};
 
 	onSearch(keyword: string) {
-		this.setState(() => {
-			return {
-				foundMovies: searchMovies(keyword),
-			};
-		});
+		this.setState(() => ({
+			foundMovies: searchMovies(keyword),
+		}));
+
+		this.props.onSearch(keyword);
 	}
 
 	render() {
