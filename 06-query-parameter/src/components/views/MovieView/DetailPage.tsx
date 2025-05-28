@@ -1,7 +1,7 @@
 import React from 'react';
-import { getMovie, type IMovies } from '../../../utils/Movie';
 import MovieDetail from './MovieComponent/MovieDetail';
 import { useParams } from 'react-router-dom';
+import { getMovie, type IMovies } from '../../../utils/Movie';
 
 const DetailPageWrapper = () => {
 	const { movieId } = useParams();

@@ -1,6 +1,6 @@
 import React from 'react';
-import { getNowPlayingMovies, type IMovies } from '../../../utils/Movie';
 import MovieList from './MovieComponent/MovieList';
+import { getNowPlayingMovies, type IMovies } from '../../../utils/Movie';
 
 interface PropTypes {
 	match: {
