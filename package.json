@@ -9,6 +9,7 @@
 		"04-react-router-dom",
 		"05-path-parameter",
 		"06-query-parameter",
-		"07-contact-apps-create"
+		"07-contact-apps-create",
+		"08-contact-apps-search"
 	]
 }
