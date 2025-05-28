@@ -1,7 +1,7 @@
 import React from 'react';
-import { getData, type IContact } from '../../utils/data';
-import ContactInput from '../../components/views/ContactPage/ContactInput';
-import ContactList from '../../components/views/ContactPage/ContactList';
+import ContactInput from '../../components/views/ContactView/ContactInput';
+import ContactList from '../../components/views/ContactView/ContactList';
+import { getData, type IContact } from '../../utils/Contact';
 
 type ContactsPageState = {
 	contacts: IContact[];

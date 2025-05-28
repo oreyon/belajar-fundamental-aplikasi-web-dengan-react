@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
-import NewsPage from '../pages/News/NewsPage';
-import ContactsPage from '../pages/Contact/ContactsPage';
+import NewsPage from '../pages/NewsApp/NewsPage';
+import ContactsPage from '../pages/ContactApp/ContactsPage';
 import SinglePageApp from '../pages/SpaPage/SinglePageApp';
 
 const Routers = createBrowserRouter([

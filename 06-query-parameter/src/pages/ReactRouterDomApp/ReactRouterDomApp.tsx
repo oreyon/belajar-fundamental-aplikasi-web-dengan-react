@@ -4,7 +4,7 @@ import HomePage from '../../components/views/Spa/HomePage';
 import FAQPage from '../../components/views/Spa/FAQPage';
 import AboutPage from '../../components/views/Spa/AboutPage';
 
-function ReactRouterDom() {
+function ReactRouterDomApp() {
 	return (
 		<Fragment>
 			<header>
@@ -31,4 +31,4 @@ function ReactRouterDom() {
 	);
 }
 
-export default ReactRouterDom;
+export default ReactRouterDomApp;

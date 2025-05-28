@@ -1,5 +1,5 @@
 import React from 'react';
-import { getMovie, type IMovies } from '../../../utils/data';
+import { getMovie, type IMovies } from '../../../utils/Movie';
 import MovieDetail from './MovieComponent/MovieDetail';
 import { useParams } from 'react-router-dom';
 

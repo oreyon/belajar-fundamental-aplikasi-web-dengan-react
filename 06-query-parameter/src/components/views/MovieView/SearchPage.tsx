@@ -1,5 +1,5 @@
 import React from 'react';
-import { searchMovies, type IMovies } from '../../../utils/data';
+import { searchMovies, type IMovies } from '../../../utils/Movie';
 import MovieList from './MovieComponent/MovieList';
 import SearchBar from './MovieComponent/SearchBar';
 

@@ -1,4 +1,4 @@
-interface IMovies {
+export interface IMovies {
 	backdropPath: string;
 	id: number;
 	overview: string;
@@ -461,4 +461,3 @@ export {
 	searchMovies,
 	movies,
 };
-export type { IMovies };

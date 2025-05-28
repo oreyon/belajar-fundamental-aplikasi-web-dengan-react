@@ -1,4 +1,4 @@
-import type { IMovies } from '../../../../utils/data';
+import type { IMovies } from '../../../../utils/Movie';
 import MovieItem from './MovieItem';
 
 interface PropTypes {

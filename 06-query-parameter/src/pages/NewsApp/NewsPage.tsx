@@ -1,4 +1,4 @@
-import News from '../../components/views/NewsPage/News';
+import News from '../../components/views/NewsView/News';
 
 const NewsPage = () => {
 	return (
