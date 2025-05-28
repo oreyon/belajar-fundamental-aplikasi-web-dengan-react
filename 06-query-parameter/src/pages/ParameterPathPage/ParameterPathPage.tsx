@@ -4,8 +4,9 @@ import NowPlayingPage from '../../components/views/MoviePage/NowPlayingPage';
 import UpcomingPage from '../../components/views/MoviePage/UpcomingPage';
 import SearchPage from '../../components/views/MoviePage/SearchPage';
 import Navigation from '../../components/views/MoviePage/MovieComponent/Navigation';
+import DetailPageWrapper from '../../components/views/MoviePage/DetailPage';
 
-function QueryParameterPage() {
+function ParameterPathPage() {
 	return (
 		<>
 			<header>
@@ -18,10 +19,11 @@ function QueryParameterPage() {
 					<Route path='/now-playing' element={<NowPlayingPage />} />
 					<Route path='/upcoming' element={<UpcomingPage />} />
 					<Route path='/search' element={<SearchPage />} />
+					<Route path='/movies/:movieId' element={<DetailPageWrapper />} />
 				</Routes>
 			</main>
 		</>
 	);
 }
 
-export default QueryParameterPage;
+export default ParameterPathPage;

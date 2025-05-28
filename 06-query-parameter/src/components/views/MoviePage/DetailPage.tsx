@@ -1,21 +1,23 @@
 import React from 'react';
 import { getMovie, type IMovies } from '../../../utils/data';
 import MovieDetail from './MovieComponent/MovieDetail';
+import { useParams } from 'react-router-dom';
+
+const DetailPageWrapper = () => {
+	const { movieId } = useParams();
+	return <DetailPage movieId={Number(movieId)} />;
+};
 
 interface PropTypes {
-	match: {
-		params: {
-			id: number;
-		};
-	};
+	movieId: number;
 }
 
-class DetailPage extends React.Component {
+class DetailPage extends React.Component<PropTypes> {
 	constructor(props: PropTypes) {
 		super(props);
 
 		this.state = {
-			movie: getMovie(props.match.params.id),
+			movie: getMovie(props.movieId),
 		};
 	}
 
@@ -36,4 +38,4 @@ class DetailPage extends React.Component {
 	}
 }
 
-export default DetailPage;
+export default DetailPageWrapper;

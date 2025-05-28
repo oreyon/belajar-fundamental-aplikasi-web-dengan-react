@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 interface PropTypes {
 	id: number;
 	title: string;
@@ -6,12 +8,14 @@ interface PropTypes {
 }
 
 function MovieItem(props: PropTypes) {
-	const { title, backdropPath, overview } = props;
+	const { id, title, backdropPath, overview } = props;
 
 	return (
 		<article>
 			<img src={backdropPath} alt={title} />
-			<h3>{title}</h3>
+			<h3>
+				<Link to={`/movies/${id}`}>{title}</Link>
+			</h3>
 			<p>{overview}</p>
 		</article>
 	);

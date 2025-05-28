@@ -7,6 +7,7 @@
 		"02-studi-kasus-prop-types-contact-apps",
 		"03-spa-practice",
 		"04-react-router-dom",
-		"05-query-parameter"
+		"05-path-parameter",
+		"06-query-parameter"
 	]
 }
