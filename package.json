@@ -8,6 +8,7 @@
 		"03-spa-practice",
 		"04-react-router-dom",
 		"05-path-parameter",
-		"06-query-parameter"
+		"06-query-parameter",
+		"07-contact-apps-create"
 	]
 }
