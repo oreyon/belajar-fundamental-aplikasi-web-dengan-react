@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
-import ContactsPage from '../../components/views/ContactView/ContactsPage';
 import ContactNavigation from '../../components/views/ContactView/ContactNavigation';
 import ContactCreate from '../../components/views/ContactView/ContactCreate';
+import ContactsPageWrapper from '../../components/views/ContactView/ContactsPage';
 
 const ContactAppPage = () => {
 	return (
@@ -12,7 +12,7 @@ const ContactAppPage = () => {
 			</header>
 			<main>
 				<Routes>
-					<Route index path='/' element={<ContactsPage />} />
+					<Route index path='/' element={<ContactsPageWrapper />} />
 					<Route path='/add' element={<ContactCreate />} />
 				</Routes>
 			</main>

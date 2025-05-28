@@ -1,3 +1,5 @@
+import { FiDelete } from 'react-icons/fi';
+
 type PropTypes = {
 	id: number;
 	onDelete: (id: number) => void;
@@ -11,7 +13,7 @@ const DeleteButton = (props: PropTypes) => {
 			type='button'
 			className='contact-item__delete'
 			onClick={() => onDelete(id)}>
-			Delete
+			<FiDelete>Delete</FiDelete>
 		</button>
 	);
 };

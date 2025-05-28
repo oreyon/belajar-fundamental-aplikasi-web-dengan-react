@@ -7,3 +7,7 @@
 > install react router
 
 - npm install --save react-router-dom
+
+> install react icons
+
+- npm install --save react-icons
