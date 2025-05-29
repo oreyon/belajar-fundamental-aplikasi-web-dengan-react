@@ -1,0 +1,95 @@
+import {
+	useState,
+	type ChangeEvent,
+	type FormEvent,
+	type KeyboardEvent,
+} from 'react';
+
+interface PropTypes {
+	createNote: (title: string, body: string) => void;
+}
+
+const NotesCreate = (props: PropTypes) => {
+	const { createNote } = props;
+	const [formCreateNote, setFormCreateNote] = useState({
+		title: '',
+		body: '',
+		maxTitleLength: 50,
+	});
+
+	const handleInputChange = (
+		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		const { name, value } = e.target;
+		setFormCreateNote((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+
+		if (name === 'title' && value.length > formCreateNote.maxTitleLength) {
+			alert(`Title cannot exceed ${formCreateNote.maxTitleLength} characters.`);
+			return;
+		}
+	};
+
+	const handleSubmitCreateNote = (event: FormEvent) => {
+		event.preventDefault();
+		createNote(formCreateNote.title, formCreateNote.body);
+		setFormCreateNote({
+			title: '',
+			body: '',
+			maxTitleLength: 50,
+		});
+	};
+
+	const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			handleSubmitCreateNote(event as unknown as FormEvent);
+		}
+	};
+
+	return (
+		<form
+			onSubmit={handleSubmitCreateNote}
+			className={'bg-secondary p-5 rounded-md shadow-lg mb-8'}>
+			<div className='mb-4'>
+				<input
+					type='text'
+					autoFocus
+					value={formCreateNote.title}
+					onChange={handleInputChange}
+					placeholder='Keep your thought here'
+					required
+					name='title'
+					className='w-full p-3 text-base border border-quaternary rounded-md bg-tertiary'
+				/>
+				<small className='text-sm text-gray-500'>
+					{formCreateNote.maxTitleLength - formCreateNote.title.length}{' '}
+					remaining
+				</small>
+			</div>
+			<div className={'mb-4'}>
+				<textarea
+					name='body'
+					id='body'
+					value={formCreateNote.body}
+					onChange={handleInputChange}
+					onKeyDown={handleKeyDown}
+					placeholder='Details'
+					required
+					className={
+						'w-full p-3 text-base border border-quaternary rounded-md bg-tertiary'
+					}
+				/>
+			</div>
+			<button
+				type='submit'
+				className='py-3 px-5 text-lg text-white bg-primary rounded-md hover:bg-quaternary'>
+				Create Note
+			</button>
+		</form>
+	);
+};
+
+export default NotesCreate;
