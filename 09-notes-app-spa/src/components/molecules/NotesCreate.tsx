@@ -4,6 +4,7 @@ import {
 	type FormEvent,
 	type KeyboardEvent,
 } from 'react';
+import PropTypes from 'prop-types';
 
 interface PropTypes {
 	createNote: (title: string, body: string) => void;
@@ -90,6 +91,10 @@ const NotesCreate = (props: PropTypes) => {
 			</button>
 		</form>
 	);
+};
+
+NotesCreate.propTypes = {
+	createNote: PropTypes.func.isRequired,
 };
 
 export default NotesCreate;

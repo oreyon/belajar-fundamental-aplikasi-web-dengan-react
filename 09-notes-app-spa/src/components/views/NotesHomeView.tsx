@@ -1,7 +1,7 @@
 import { type Note } from '../../utils/data';
 import NotesCreate from '../molecules/NotesCreate';
 import NotesActive from '../organism/NotesActive';
-
+import PropTypes from 'prop-types';
 interface PropTypes {
 	notes: Note[];
 	addNote: (title: string, body: string) => void;
@@ -25,6 +25,22 @@ const NotesHomeView = (props: PropTypes) => {
 			/>
 		</div>
 	);
+};
+
+NotesHomeView.propTypes = {
+	notes: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.number.isRequired,
+			title: PropTypes.string.isRequired,
+			body: PropTypes.string.isRequired,
+			createdAt: PropTypes.string.isRequired,
+			archived: PropTypes.bool.isRequired,
+		})
+	).isRequired,
+	addNote: PropTypes.func.isRequired,
+	editNote: PropTypes.func.isRequired,
+	deleteNote: PropTypes.func.isRequired,
+	toggleArchiveNote: PropTypes.func.isRequired,
 };
 
 export default NotesHomeView;

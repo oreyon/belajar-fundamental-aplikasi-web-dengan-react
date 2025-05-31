@@ -1,5 +1,6 @@
 import type { Note } from '../../utils/data';
 import NotesList from './NotesList';
+import PropTypes from 'prop-types';
 
 interface PropTypes {
 	notes: Note[];
@@ -22,6 +23,21 @@ const NotesArchive = (props: PropTypes) => {
 			/>
 		</div>
 	);
+};
+
+NotesArchive.propTypes = {
+	notes: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.number.isRequired,
+			title: PropTypes.string.isRequired,
+			body: PropTypes.string.isRequired,
+			createdAt: PropTypes.string.isRequired,
+			archived: PropTypes.bool.isRequired,
+		})
+	).isRequired,
+	editNote: PropTypes.func.isRequired,
+	deleteNote: PropTypes.func.isRequired,
+	toggleArchiveNote: PropTypes.func.isRequired,
 };
 
 export default NotesArchive;

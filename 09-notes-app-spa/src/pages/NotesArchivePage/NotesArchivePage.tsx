@@ -3,6 +3,7 @@ import type { Note } from '../../utils/data';
 import NotesArchiveView from '../../components/views/NotesArchiveView';
 import NotesSearchButton from '../../components/atoms/NotesSearchButton';
 import { useSearchParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 interface PropTypes {
 	notes: Note[];
@@ -45,6 +46,21 @@ const NotesArchivePage = (props: PropTypes) => {
 			/>
 		</Fragment>
 	);
+};
+
+NotesArchivePage.propTypes = {
+	notes: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.number.isRequired,
+			title: PropTypes.string.isRequired,
+			body: PropTypes.string.isRequired,
+			createdAt: PropTypes.string.isRequired,
+			archived: PropTypes.bool.isRequired,
+		})
+	).isRequired,
+	editNote: PropTypes.func.isRequired,
+	deleteNote: PropTypes.func.isRequired,
+	toggleArchiveNote: PropTypes.func.isRequired,
 };
 
 export default NotesArchivePage;

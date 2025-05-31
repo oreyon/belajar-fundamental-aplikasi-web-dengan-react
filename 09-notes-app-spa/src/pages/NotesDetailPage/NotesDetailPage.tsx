@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import type { Note } from '../../utils/data';
 import { useState, type FormEvent } from 'react';
+import PropTypes from 'prop-types';
 
 interface Props {
 	notes: Note[];
@@ -11,11 +12,11 @@ const NotesDetailPage = (props: Props) => {
 	const { notes, editNote } = props;
 	const { noteId } = useParams();
 	const navigate = useNavigate();
-	const [isEditing, setIsEditing] = useState(false);
-	const [title, setTitle] = useState('');
-	const [body, setBody] = useState('');
-
 	const note = notes.find((n: Note) => n.id === Number(noteId));
+
+	const [isEditing, setIsEditing] = useState(false);
+	const [title, setTitle] = useState(note ? note.title : '');
+	const [body, setBody] = useState(note ? note.body : '');
 
 	if (!note) {
 		return <Navigate to='/not-found' replace />;
@@ -89,6 +90,19 @@ const NotesDetailPage = (props: Props) => {
 			)}
 		</div>
 	);
+};
+
+NotesDetailPage.propTypes = {
+	notes: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.number.isRequired,
+			title: PropTypes.string.isRequired,
+			body: PropTypes.string.isRequired,
+			createdAt: PropTypes.string.isRequired,
+			archived: PropTypes.bool.isRequired,
+		})
+	).isRequired,
+	editNote: PropTypes.func.isRequired,
 };
 
 export default NotesDetailPage;

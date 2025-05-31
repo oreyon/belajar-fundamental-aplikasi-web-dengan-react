@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type KeyboardEvent } from 'react';
+import PropTypes from 'prop-types';
 
 interface PropTypes {
 	onSearchNote: (title: string) => void;
@@ -41,6 +42,11 @@ const NotesSearchButton = (props: PropTypes) => {
 			</button>
 		</div>
 	);
+};
+
+NotesSearchButton.propTypes = {
+	onSearchNote: PropTypes.func.isRequired,
+	defaultKeyword: PropTypes.string,
 };
 
 export default NotesSearchButton;

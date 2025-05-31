@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import type { Note } from '../../utils/data';
+import PropTypes from 'prop-types';
 
 interface PropTypes {
 	note: Note;
@@ -94,6 +95,19 @@ const NotesItem = (props: PropTypes) => {
 			)}
 		</div>
 	);
+};
+
+NotesItem.propTypes = {
+	note: PropTypes.shape({
+		id: PropTypes.number.isRequired,
+		title: PropTypes.string.isRequired,
+		body: PropTypes.string.isRequired,
+		createdAt: PropTypes.string.isRequired,
+		archived: PropTypes.bool.isRequired,
+	}).isRequired,
+	editNote: PropTypes.func.isRequired,
+	deleteNote: PropTypes.func.isRequired,
+	toggleArchiveNote: PropTypes.func.isRequired,
 };
 
 export default NotesItem;

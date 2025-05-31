@@ -1,6 +1,7 @@
 import { Fragment } from 'react/jsx-runtime';
 import NotesCreate from '../../components/molecules/NotesCreate';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 interface PropTypes {
 	addNote: (title: string, body: string) => void;
@@ -25,6 +26,10 @@ const NotesCreatePage = (props: PropTypes) => {
 			</div>
 		</Fragment>
 	);
+};
+
+NotesCreatePage.propTypes = {
+	addNote: PropTypes.func.isRequired,
 };
 
 export default NotesCreatePage;
