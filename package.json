@@ -11,6 +11,7 @@
 		"06-query-parameter",
 		"07-contact-apps-create",
 		"08-contact-apps-search",
-		"09-notes-app-spa"
+		"09-notes-app-spa",
+		"10-fetch-api"
 	]
 }
