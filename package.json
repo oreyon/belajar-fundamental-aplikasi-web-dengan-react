@@ -12,6 +12,7 @@
 		"07-contact-apps-create",
 		"08-contact-apps-search",
 		"09-notes-app-spa",
-		"10-fetch-api"
+		"10-fetch-api",
+		"11-component-lifecycle"
 	]
 }
