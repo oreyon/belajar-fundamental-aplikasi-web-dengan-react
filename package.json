@@ -13,6 +13,7 @@
 		"08-contact-apps-search",
 		"09-notes-app-spa",
 		"10-fetch-api",
-		"11-component-lifecycle"
+		"11-component-lifecycle",
+		"12-contact-apps-restful-api"
 	]
 }
