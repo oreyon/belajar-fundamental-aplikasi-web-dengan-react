@@ -17,6 +17,7 @@
 		"12-contact-apps-restful-api",
 		"13-protected-component",
 		"14-register-user",
-		"15-login-user"
+		"15-login-user",
+		"16-contact-management"
 	]
 }
