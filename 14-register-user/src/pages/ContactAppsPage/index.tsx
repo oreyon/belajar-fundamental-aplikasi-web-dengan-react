@@ -6,6 +6,7 @@ import Navigation from "../../components/layouts/Navigation";
 import { Route, Routes } from "react-router-dom";
 import HomePageWrapper from "./HomePage";
 import AddPageContact from "./AddPage";
+import RegisterPage from "./RegisterPage";
 
 type PropTypes = object;
 
@@ -59,7 +60,7 @@ class ContactAppPage extends Component<PropTypes,StateTypes> {
           <main>
             <Routes>
               <Route path="/*" element={<p>Halaman Login</p>} />
-              <Route path="/register" element={<p>Halaman Register</p>} />
+              <Route path="/register" element={<RegisterPage/>} />
             </Routes>
           </main>
         </div>

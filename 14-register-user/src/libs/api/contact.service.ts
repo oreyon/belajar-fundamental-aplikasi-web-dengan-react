@@ -36,14 +36,24 @@
      
       return { error: false, data: responseJson.data };
     }
+
+    type RegisterRequest = {
+      name: string;
+      email: string;
+      password: string;
+    }
      
-    async function register(name:string, email:string, password:string) {
+    async function register(registerRequest: RegisterRequest) {
       const response = await fetch(`${BASE_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, email, password}),
+        body: JSON.stringify({ 
+          name: registerRequest.name, 
+          email: registerRequest.email, 
+          password: registerRequest.password
+        }),
       });
      
       const responseJson = await response.json();
