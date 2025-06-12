@@ -1,12 +1,12 @@
 import { Component} from "react";
-import {  getContacts, type Contact } from "../../utils/dataContact";
+import {  type Contact } from "../../utils/dataContact";
 import Navigation from "../../components/layouts/Navigation";
 import { Route, Routes } from "react-router-dom";
 import HomePageWrapper from "./HomePage";
 import AddPageContact from "./AddPage";
 import RegisterPage from "./RegisterPage";
 import LoginPage from "./LoginPage";
-import { getUserLogged, putAccessToken } from "../../libs/api/contact.service";
+import { getContacts, getUserLogged, putAccessToken } from "../../libs/api/contact.service";
 
 type PropTypes = object;
 
@@ -27,7 +27,7 @@ class ContactAppPage extends Component<PropTypes,StateTypes> {
     super(props);
 
     this.state = {
-      contacts: getContacts(),
+      contacts: [],
       authedUser: null,
       initializing: true,
     }
@@ -81,14 +81,15 @@ class ContactAppPage extends Component<PropTypes,StateTypes> {
   }
 
   async componentDidMount() {
-   const {data} = await getUserLogged();
-   this.setState(() => {
-    return {
-      authedUser: data,
-      initializing: false,
-      contacts: getContacts(),
-    }
-   })
+    const { data: authedUser } = await getUserLogged();
+    const contactsResponse = await getContacts();
+    this.setState(() => {
+      return {
+        authedUser,
+        initializing: false,
+        contacts: contactsResponse.data || [],
+      }
+    })
   }
 
   render(){
