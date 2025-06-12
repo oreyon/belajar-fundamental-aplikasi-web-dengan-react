@@ -16,6 +16,7 @@
 		"11-component-lifecycle",
 		"12-contact-apps-restful-api",
 		"13-protected-component",
-		"14-register-user"
+		"14-register-user",
+		"15-login-user"
 	]
 }
