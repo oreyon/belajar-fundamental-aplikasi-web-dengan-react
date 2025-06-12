@@ -14,6 +14,7 @@
 		"09-notes-app-spa",
 		"10-fetch-api",
 		"11-component-lifecycle",
-		"12-contact-apps-restful-api"
+		"12-contact-apps-restful-api",
+		"13-protected-component"
 	]
 }
