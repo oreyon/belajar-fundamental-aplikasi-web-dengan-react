@@ -7,6 +7,7 @@ import AddPageContact from "./AddPage";
 import RegisterPage from "./RegisterPage";
 import LoginPage from "./LoginPage";
 import { getContacts, getUserLogged, putAccessToken } from "../../libs/api/contact.service";
+import { LanguageProvider, type Language } from "../../contexts/LanguageContext";
 
 type PropTypes = object;
 
@@ -20,6 +21,10 @@ interface StateTypes {
   contacts: Contact[];
   authedUser: AuthedUser | null;
   initializing: boolean;
+  languageContext: {
+    language: Language;
+    toggleLanguage: () => void;
+  }
 }
 
 class ContactAppPage extends Component<PropTypes,StateTypes> {
@@ -30,6 +35,21 @@ class ContactAppPage extends Component<PropTypes,StateTypes> {
       contacts: [],
       authedUser: null,
       initializing: true,
+      languageContext: {
+        language: localStorage.getItem('locale') as Language || 'id',
+        toggleLanguage: () => {
+          this.setState((prevState: StateTypes) => {
+            const activeLanguage = prevState.languageContext.language === 'id' ? 'en' : 'id';
+            localStorage.setItem('locale', activeLanguage);
+            return {
+              languageContext: {
+                ...prevState.languageContext,
+                language: activeLanguage,
+              }
+            }
+          })
+        }
+      }
     }
 
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
@@ -62,7 +82,7 @@ class ContactAppPage extends Component<PropTypes,StateTypes> {
   async onLoginSuccess({ accessToken }: { accessToken: string }) {
     putAccessToken(accessToken);
     const { data } = await getUserLogged();
-    console.log('AUTH USER',data);
+    
     this.setState(() => {
       return {
         authedUser: data,
@@ -99,35 +119,39 @@ class ContactAppPage extends Component<PropTypes,StateTypes> {
 
     if (this.state.authedUser === null) {
       return (
-       <div className='contact-app'>
-          <header className='contact-app__header'>
-            <h1>Aplikasi Kontak</h1>
-          </header>
-          <main>
-            <Routes>
-              <Route path="/*" element={<LoginPage loginSuccess={this.onLoginSuccess} />} />
-              <Route path="/register" element={<RegisterPage/>} />
-            </Routes>
-          </main>
-        </div>
+        <LanguageProvider value={this.state.languageContext}>
+          <div className='contact-app'>
+              <header className='contact-app__header'>
+                <h1>{this.state.languageContext.language === 'id' ? 'Aplikasi Kontak' : 'Contacts App'}</h1>
+              </header>
+              <main>
+                <Routes>
+                  <Route path="/*" element={<LoginPage loginSuccess={this.onLoginSuccess} />} />
+                  <Route path="/register" element={<RegisterPage/>} />
+                </Routes>
+              </main>
+            </div>
+        </LanguageProvider>
       );
     }
 
 
       return (
-        <div className="contact-app">
-          <header className="contact-app__header">
-            <h1>Aplikasi Kontak</h1>
-            <Navigation name={this.state.authedUser.name} onLogout={this.handleLogout}/>
-          </header>
+        <LanguageProvider value={this.state.languageContext}>
+            <div className="contact-app">
+              <header className="contact-app__header">
+                <h1>{this.state.languageContext.language === 'id' ? 'Aplikasi Kontak' : 'Contacts App'}</h1>
+                <Navigation name={this.state.authedUser.name} onLogout={this.handleLogout}/>
+              </header>
 
-          <main>
-            <Routes>
-              <Route path="/" element={<HomePageWrapper/>}/>
-              <Route path="/add" element={<AddPageContact/>} />
-            </Routes>
-        </main>
-      </div>
+              <main>
+                <Routes>
+                  <Route path="/" element={<HomePageWrapper/>}/>
+                  <Route path="/add" element={<AddPageContact/>} />
+                </Routes>
+            </main>
+          </div>
+        </LanguageProvider>
       )
   }
 }

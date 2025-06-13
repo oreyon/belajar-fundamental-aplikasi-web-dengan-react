@@ -1,5 +1,6 @@
 import type { ChangeEvent } from "react";
 import PropTypes from "prop-types";
+import { LanguageConsumer } from "../../contexts/LanguageContext";
 
 
 type PropTypes = {
@@ -10,7 +11,20 @@ type PropTypes = {
 const SearchBar = (props: PropTypes) => {
   const { keyword, onKeywordChange } = props;
   return (
-    <input aria-label={"search-bar"} className={"search-bar"} type={"text"} placeholder={"cari berdasarkan nama"} value={keyword} onChange={(event:ChangeEvent<HTMLInputElement>) => onKeywordChange(event.target.value)}/>
+    <LanguageConsumer>
+      {({ language }) => {
+        return (
+          <input 
+          aria-label={"search-bar"} 
+          className={"search-bar"} 
+          type={"text"} 
+          placeholder={language === 'id' ? 'Cari kontak...' : 'Search contacts...'}
+          value={keyword} 
+          onChange={(event:ChangeEvent<HTMLInputElement>) => onKeywordChange(event.target.value)}
+          />
+        )
+      }}
+    </LanguageConsumer>
   )
 }
 

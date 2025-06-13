@@ -5,6 +5,7 @@ import ContactList from '../../../components/organism/ContactList';
 import { type Contact } from '../../../utils/dataContact';
 import type PropTypes from 'prop-types';
 import { deleteContact, getContacts } from '../../../libs/api/contact.service';
+import { LanguageConsumer } from '../../../contexts/LanguageContext';
 
 function HomePageWrapper() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -81,11 +82,17 @@ class HomePage extends React.Component<PropTypes, StateTypes> {
     });
 
     return (
-      <section>
-        <h2>Daftar Kontak</h2>
-        <SearchBar keyword={this.state.keyword} onKeywordChange={this.onKeywordChangeHandler} />
-        <ContactList contacts={contacts} onDelete={this.onDeleteHandler} />
-      </section>
+      <LanguageConsumer>
+        {({ language }) => {
+          return (
+            <section>
+              <h2>{language === 'id' ? 'Daftar Kontak' : 'Contacts List'}</h2>
+              <SearchBar keyword={this.state.keyword} onKeywordChange={this.onKeywordChangeHandler} />
+              <ContactList contacts={contacts} onDelete={this.onDeleteHandler} />
+            </section>
+          )
+        }}
+      </LanguageConsumer>
     )
   }
 }
