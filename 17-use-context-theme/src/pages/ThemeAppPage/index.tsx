@@ -3,10 +3,11 @@ import  { Component } from 'react'
 import { ThemeProvider } from '../../contexts/ThemeContext'
 import ToggleTheme from '../../components/layouts/ToggleTheme';
 
-type PropTypes = object;
+type Theme = 'light' | 'dark';
 
+type PropTypes = object;
 interface StateTypes {
-  theme: string;
+  theme: Theme;
   toggleTheme: () => void;
 }
 
@@ -16,7 +17,7 @@ export class ThemeAppPage extends Component<PropTypes, StateTypes> {
 
     this.state = {
       // take the theme from localStorage or default to 'light'
-      theme: localStorage.getItem('theme') || 'light',
+      theme: localStorage.getItem('theme') as Theme || 'light',
 
       toggleTheme: () => {
         this.setState((prevState: Readonly<StateTypes>) => {

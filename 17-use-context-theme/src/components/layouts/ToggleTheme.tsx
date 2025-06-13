@@ -1,15 +1,20 @@
 import { FaMoon, FaSun } from "react-icons/fa6"
-import { ThemeConsumer } from "../../contexts/ThemeContext"
+import ThemeContext from "../../contexts/ThemeContext"
+import { useContext } from "react"
 
 
 const ToggleTheme = () => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
   return (
+    /**
+     * 
     <ThemeConsumer>
-      {({ theme, toggleTheme}) => {
-        return <button aria-label={"theme"} type={"button"} onClick={toggleTheme}>{theme === 'light' ? <FaMoon/> : <FaSun/>}</button>;
-      }}
-
+    {({ theme, toggleTheme}) => { // <--- can refactor like code in row
+    return <button aria-label={"theme"} type={"button"} onClick={toggleTheme}>{theme === 'light' ? <FaMoon/> : <FaSun/>}</button>;
+    }}
     </ThemeConsumer>
+    */
+   <button aria-label={"theme"} type={"button"} onClick={toggleTheme}>{theme === 'light' ? <FaMoon/> : <FaSun/>}</button>
   )
 }
 
