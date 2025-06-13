@@ -1,15 +1,9 @@
-
-
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import  { Component } from 'react'
 import { ThemeProvider } from '../../contexts/ThemeContext'
 import ToggleTheme from '../../components/layouts/ToggleTheme';
 
-interface PropTypes {
-  children?: React.ReactNode;
-  theme?: string;
-  toggleTheme?: () => void;
-}
+type PropTypes = object;
 
 interface StateTypes {
   theme: string;
