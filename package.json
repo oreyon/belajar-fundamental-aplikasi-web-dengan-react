@@ -20,6 +20,7 @@
 		"15-login-user",
 		"16-contact-management",
 		"17-use-context-theme",
-		"18-use-context-language"
+		"18-use-context-language",
+		"19-use-state"
 	]
 }
