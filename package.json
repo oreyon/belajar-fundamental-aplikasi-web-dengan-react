@@ -24,6 +24,7 @@
 		"19-use-state",
 		"20-use-effect",
 		"21-use-context",
-		"22-custom-hook"
+		"22-custom-hook",
+		"23-functional-component-refactoring"
 	]
 }
