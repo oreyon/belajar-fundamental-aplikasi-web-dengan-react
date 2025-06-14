@@ -1,0 +1,41 @@
+
+// ======== 11. HTML Attributes & Event Types ========
+// Common HTML attribute typings in TSX
+
+// id, className, style, title => string
+// disabled => boolean
+// checked => boolean
+// value => string | number | readonly string[]
+// src, href, alt => string
+
+// Common event handler types:
+// onClick => React.MouseEventHandler<HTMLElement>
+// onChange => React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+// onSubmit => React.FormEventHandler<HTMLFormElement>
+// onKeyDown, onKeyUp, onKeyPress => React.KeyboardEventHandler<HTMLElement>
+// onMouseEnter, onMouseLeave, onMouseMove => React.MouseEventHandler<HTMLElement>
+// onFocus, onBlur => React.FocusEventHandler<HTMLElement>
+// onScroll => React.UIEventHandler<HTMLElement>
+// onDrag, onDrop => React.DragEventHandler<HTMLElement>
+// onTouchStart, onTouchEnd => React.TouchEventHandler<HTMLElement>
+// onContextMenu => React.MouseEventHandler<HTMLElement>
+
+// Usage example:
+// <button disabled={isDisabled} onClick={this.handleClick}>Click me</button>
+// <input
+//   type="text"
+//   value={this.state.inputValue}
+//   onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ inputValue: e.target.value })}
+// />
+
+// ======== Summary ========
+
+// • Use interfaces for Props & State
+// • Call super(props) in constructor
+// • Define defaultProps, propTypes as static properties
+// • Manage state via this.setState (functional or object)
+// • Lifecycle: mounting, updating, unmounting, errors
+// • Optimize with PureComponent when appropriate
+// • Access refs via createRef and type-safe refs
+// • Optionally use contextType for context
+// • Use arrow methods to autobind handlers
