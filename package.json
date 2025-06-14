@@ -21,6 +21,7 @@
 		"16-contact-management",
 		"17-use-context-theme",
 		"18-use-context-language",
-		"19-use-state"
+		"19-use-state",
+		"20-use-effect"
 	]
 }
