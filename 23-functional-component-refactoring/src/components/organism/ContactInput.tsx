@@ -54,7 +54,7 @@ class ContactInput extends React.Component<PropTypes, StateTypes> {
           <form className='contact-input' onSubmit={this.onSubmitEventHandler}>
             <input type="text" placeholder={language === 'id' ? 'Nama' : 'Name'} value={this.state.name} onChange={this.onNameChangeEventHandler} className={"shadow"}/>
             <input type="text" placeholder={language === 'id' ? 'Tag' : 'Tag'} value={this.state.tag} onChange={this.onTagChangeEventHandler} className={"shadow"} />
-            <button type="submit" className={""} >{language === 'id' ? 'Tambah' : 'Add'}</button>
+            <button type="submit">{language === 'id' ? 'Tambah' : 'Add'}</button>
           </form>
         )
       }}

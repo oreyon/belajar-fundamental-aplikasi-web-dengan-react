@@ -1,159 +1,121 @@
-import { Component} from "react";
-import {  type Contact } from "../../utils/dataContact";
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { getContacts, getUserLogged, putAccessToken } from "../../libs/api/contact.service";
+import { type Contact } from "../../utils/dataContact";
+
 import Navigation from "../../components/layouts/Navigation";
-import { Route, Routes } from "react-router-dom";
 import HomePageWrapper from "./HomePage";
 import AddPageContact from "./AddPage";
 import RegisterPage from "./RegisterPage";
 import LoginPage from "./LoginPage";
-import { getContacts, getUserLogged, putAccessToken } from "../../libs/api/contact.service";
-import { LanguageProvider, type Language } from "../../contexts/LanguageContext";
 
-type PropTypes = object;
+import { LanguageProvider, type Language } from "../../contexts/LanguageContext";
+import ThemeContext from "../../contexts/ThemeContext";
 
 type AuthedUser = {
   id: string;
   email: string;
   name: string;
-}
+};
 
-interface StateTypes {
-  contacts: Contact[];
-  authedUser: AuthedUser | null;
-  initializing: boolean;
-  languageContext: {
-    language: Language;
-    toggleLanguage: () => void;
-  }
-}
+const ContactAppPage = () => {
+  const [,setContacts] = useState<Contact[]>([]);
+  const [authedUser, setAuthedUser] = useState<AuthedUser | null>(null);
+  const [initializing, setInitializing] = useState(true);
+  const [language, setLanguage] = useState<Language>(
+    (localStorage.getItem("locale") as Language) || "id"
+  );
 
-class ContactAppPage extends Component<PropTypes,StateTypes> {
-  constructor(props: PropTypes) {
-    super(props);
+  const toggleLanguage = useCallback(() => {
+    setLanguage((prev) => {
+      const newLang = prev === "id" ? "en" : "id";
+      localStorage.setItem("locale", newLang);
+      return newLang;
+    });
+  }, []);
 
-    this.state = {
-      contacts: [],
-      authedUser: null,
-      initializing: true,
-      languageContext: {
-        language: localStorage.getItem('locale') as Language || 'id',
-        toggleLanguage: () => {
-          this.setState((prevState: StateTypes) => {
-            const activeLanguage = prevState.languageContext.language === 'id' ? 'en' : 'id';
-            localStorage.setItem('locale', activeLanguage);
-            return {
-              languageContext: {
-                ...prevState.languageContext,
-                language: activeLanguage,
-              }
-            }
-          })
-        }
-      }
-    }
+  const languageContextValue = useMemo(() => ({
+    language,
+    toggleLanguage,
+  }), [language, toggleLanguage]);
 
-    this.onDeleteHandler = this.onDeleteHandler.bind(this);
-    this.onAddContactHandler = this.onAddContactHandler.bind(this);
-    this.onLoginSuccess = this.onLoginSuccess.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
-  }
+  const [theme, setTheme] = useState<"light" | "dark">(
+    (localStorage.getItem("theme") as "light" | "dark") || "light"
+  );
 
-  onDeleteHandler (id: number) {
-    const contacts = this.state.contacts.filter(contact => contact.id !== id);
-    this.setState({ contacts });
-  }
+  const toggleTheme = useCallback(() => {
+    setTheme((prevTheme) => {
+      const nextTheme = prevTheme === "light" ? "dark" : "light";
+      localStorage.setItem("theme", nextTheme);
+      return nextTheme;
+    });
+  }, []);
 
-  onAddContactHandler({name, tag}: Omit<Contact, 'id' | 'imageUrl'>) {
-    this.setState((prevState: StateTypes) => {
-      return {
-        contacts: [
-          ...prevState.contacts,
-          {
-            id: +new Date(),
-            name,
-            tag,
-            imageUrl: '/images/default.jpg',
-          }
-        ]
-      }
-    })
-  }
+  const themeContextValue = useMemo(() => ({
+    theme,
+    toggleTheme,
+  }), [theme, toggleTheme]);
 
-  async onLoginSuccess({ accessToken }: { accessToken: string }) {
+  const onLoginSuccess = async ({ accessToken }: { accessToken: string }) => {
     putAccessToken(accessToken);
     const { data } = await getUserLogged();
-    
-    this.setState(() => {
-      return {
-        authedUser: data,
-      };
-    });
-  }
+    setAuthedUser(data);
+  };
 
-  handleLogout() {
-    this.setState(() => {
-      return {
-        authedUser: null,
+  const handleLogout = () => {
+    setAuthedUser(null);
+    putAccessToken("");
+  };
+
+
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        const { data: user } = await getUserLogged();
+        const contactsResponse = await getContacts();
+        setAuthedUser(user);
+        setContacts(contactsResponse.data || []);
+      } catch (err) {
+        setAuthedUser(null);
+      } finally {
+        setInitializing(false);
       }
-    })
+    };
+    initialize();
+  }, []);
 
-    putAccessToken('');
-  }
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
-  async componentDidMount() {
-    const { data: authedUser } = await getUserLogged();
-    const contactsResponse = await getContacts();
-    this.setState(() => {
-      return {
-        authedUser,
-        initializing: false,
-        contacts: contactsResponse.data || [],
-      }
-    })
-  }
+  if (initializing) return null;
 
-  render(){
-    if (this.state.initializing) {
-      return null;
-    }
+  return (
+    <ThemeContext.Provider value={themeContextValue}>
+      <LanguageProvider value={languageContextValue}>
+        <div className="contact-app">
+          <header className="contact-app__header">
+            <h1>{language === "id" ? "Aplikasi Kontak" : "Contacts App"}</h1>
+            {authedUser && <Navigation name={authedUser.name} onLogout={handleLogout} />}
+          </header>
 
-    if (this.state.authedUser === null) {
-      return (
-        <LanguageProvider value={this.state.languageContext}>
-          <div className='contact-app'>
-              <header className='contact-app__header'>
-                <h1>{this.state.languageContext.language === 'id' ? 'Aplikasi Kontak' : 'Contacts App'}</h1>
-              </header>
-              <main>
-                <Routes>
-                  <Route path="/*" element={<LoginPage loginSuccess={this.onLoginSuccess} />} />
-                  <Route path="/register" element={<RegisterPage/>} />
-                </Routes>
-              </main>
-            </div>
-        </LanguageProvider>
-      );
-    }
-
-
-      return (
-        <LanguageProvider value={this.state.languageContext}>
-            <div className="contact-app">
-              <header className="contact-app__header">
-                <h1>{this.state.languageContext.language === 'id' ? 'Aplikasi Kontak' : 'Contacts App'}</h1>
-                <Navigation name={this.state.authedUser.name} onLogout={this.handleLogout}/>
-              </header>
-
-              <main>
-                <Routes>
-                  <Route path="/" element={<HomePageWrapper/>}/>
-                  <Route path="/add" element={<AddPageContact/>} />
-                </Routes>
-            </main>
-          </div>
-        </LanguageProvider>
-      )
-  }
-}
+          <main>
+            {authedUser === null ? (
+              <Routes>
+                <Route path="/*" element={<LoginPage loginSuccess={onLoginSuccess} />} />
+                <Route path="/register" element={<RegisterPage />} />
+              </Routes>
+            ) : (
+              <Routes>
+                <Route path="/" element={<HomePageWrapper />} />
+                <Route path="/add" element={<AddPageContact />} />
+              </Routes>
+            )}
+          </main>
+        </div>
+      </LanguageProvider>
+    </ThemeContext.Provider>
+  );
+};
 
 export default ContactAppPage;
