@@ -1,17 +1,16 @@
-import { type Note } from '../../utils/data';
+import type { Note } from '../../libs/api/note.service';
 import NotesCreate from '../molecules/NotesCreate';
 import NotesActive from '../organism/NotesActive';
 import PropTypes from 'prop-types';
 interface PropTypes {
 	notes: Note[];
 	addNote: (title: string, body: string) => void;
-	editNote: (id: number, title: string, body: string) => void;
-	deleteNote: (id: number) => void;
-	toggleArchiveNote: (id: number) => void;
+	deleteNote: (id: string) => void;
+	toggleArchiveNote: (id: string) => void;
 }
 
 const NotesHomeView = (props: PropTypes) => {
-	const { notes, addNote, editNote, deleteNote, toggleArchiveNote } = props;
+	const { notes, addNote, deleteNote, toggleArchiveNote } = props;
 	const activeNotes = notes.filter((note) => !note.archived);
 
 	return (
@@ -19,7 +18,6 @@ const NotesHomeView = (props: PropTypes) => {
 			<NotesCreate createNote={addNote} />
 			<NotesActive
 				notes={activeNotes}
-				editNote={editNote}
 				deleteNote={deleteNote}
 				toggleArchiveNote={toggleArchiveNote}
 			/>
@@ -35,10 +33,10 @@ NotesHomeView.propTypes = {
 			body: PropTypes.string.isRequired,
 			createdAt: PropTypes.string.isRequired,
 			archived: PropTypes.bool.isRequired,
+			owner: PropTypes.string.isRequired,
 		})
 	).isRequired,
 	addNote: PropTypes.func.isRequired,
-	editNote: PropTypes.func.isRequired,
 	deleteNote: PropTypes.func.isRequired,
 	toggleArchiveNote: PropTypes.func.isRequired,
 };

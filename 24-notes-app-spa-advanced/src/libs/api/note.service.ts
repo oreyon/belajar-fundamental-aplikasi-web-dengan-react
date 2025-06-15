@@ -126,7 +126,7 @@ export const deleteNote = async (noteId: string) => {
   return await customFetch(`/notes/${noteId}`, {
     method: 'DELETE',
     headers: {
-      'Authorization': `Bearer ${getAccessToken}`,
+      'Authorization': `Bearer ${getAccessToken()}`,
     }
   })
 }

@@ -1,20 +1,19 @@
 import { Fragment } from 'react/jsx-runtime';
 import NotesSearchButton from '../../components/atoms/NotesSearchButton';
 import NotesHomeView from '../../components/views/NotesHomeView';
-import type { Note } from '../../utils/data';
 import { useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import type { Note } from '../../libs/api/note.service';
 
 interface PropTypes {
 	notes: Note[];
 	addNote: (title: string, body: string) => void;
-	editNote: (id: number, title: string, body: string) => void;
-	deleteNote: (id: number) => void;
-	toggleArchiveNote: (id: number) => void;
+	deleteNote: (id: string) => void;
+	toggleArchiveNote: (id: string) => void;
 }
 
 const NotesAppHomePage = (props: PropTypes) => {
-	const { notes, addNote, editNote, deleteNote, toggleArchiveNote } = props;
+	const { notes, addNote, deleteNote, toggleArchiveNote } = props;
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const queryParams = searchParams.get('title') || '';
@@ -42,7 +41,6 @@ const NotesAppHomePage = (props: PropTypes) => {
 			<NotesHomeView
 				notes={filteredNotes}
 				addNote={addNote}
-				editNote={editNote}
 				deleteNote={deleteNote}
 				toggleArchiveNote={toggleArchiveNote}
 			/>
@@ -53,15 +51,15 @@ const NotesAppHomePage = (props: PropTypes) => {
 NotesAppHomePage.propTypes = {
 	notes: PropTypes.arrayOf(
 		PropTypes.shape({
-			id: PropTypes.number.isRequired,
+			id: PropTypes.string.isRequired,
 			title: PropTypes.string.isRequired,
 			body: PropTypes.string.isRequired,
 			createdAt: PropTypes.string.isRequired,
 			archived: PropTypes.bool.isRequired,
+			owner: PropTypes.string.isRequired,
 		})
 	).isRequired,
 	addNote: PropTypes.func.isRequired,
-	editNote: PropTypes.func.isRequired,
 	deleteNote: PropTypes.func.isRequired,
 	toggleArchiveNote: PropTypes.func.isRequired,
 };

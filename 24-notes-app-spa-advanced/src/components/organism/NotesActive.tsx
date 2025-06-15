@@ -1,19 +1,18 @@
 import { useContext } from 'react';
-import type { Note } from '../../utils/data';
 import NotesList from './NotesList';
 import PropTypes from 'prop-types';
 import LanguageContext from '../../contexts/LanguageContext';
+import type { Note } from '../../libs/api/note.service';
 
 interface PropTypes {
 	notes: Note[];
-	editNote: (id: number, title: string, body: string) => void;
-	deleteNote: (id: number) => void;
-	toggleArchiveNote: (id: number) => void;
+	deleteNote: (id: string) => void;
+	toggleArchiveNote: (id: string) => void;
 }
 
 const NotesActive = (props: PropTypes) => {
 	const { language } = useContext(LanguageContext);
-	const { notes, editNote, deleteNote, toggleArchiveNote } = props;
+	const { notes, deleteNote, toggleArchiveNote } = props;
 
 	return (
 		<div>
@@ -22,7 +21,6 @@ const NotesActive = (props: PropTypes) => {
 			</h2>
 			<NotesList
 				notes={notes}
-				editNote={editNote}
 				deleteNote={deleteNote}
 				toggleArchiveNote={toggleArchiveNote}
 			/>
@@ -33,14 +31,14 @@ const NotesActive = (props: PropTypes) => {
 NotesActive.propTypes = {
 	notes: PropTypes.arrayOf(
 		PropTypes.shape({
-			id: PropTypes.number.isRequired,
+			id: PropTypes.string.isRequired,
 			title: PropTypes.string.isRequired,
 			body: PropTypes.string.isRequired,
 			createdAt: PropTypes.string.isRequired,
 			archived: PropTypes.bool.isRequired,
+			owner: PropTypes.string.isRequired,
 		})
 	).isRequired,
-	editNote: PropTypes.func.isRequired,
 	deleteNote: PropTypes.func.isRequired,
 	toggleArchiveNote: PropTypes.func.isRequired,
 };

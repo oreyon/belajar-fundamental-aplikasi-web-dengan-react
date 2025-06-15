@@ -1,6 +1,6 @@
 import { useContext, useState, type ChangeEvent, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getUserLogged, login, putAccessToken, register } from "../../libs/api/note.service";
+import { register } from "../../libs/api/note.service";
 import LanguageContext from "../../contexts/LanguageContext";
 
 const RegisterPage = () => {
@@ -13,7 +13,7 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleRegister = async (event: FormEvent) => {
+  const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
@@ -21,19 +21,20 @@ const RegisterPage = () => {
       return;
     }
 
-    try {
-      await register({ name, email, password });
-      const loginResponse = await login({ email, password });
-      const loginData = await loginResponse.json();
-      putAccessToken(loginData.data.accessToken);
+    const response = await register({
+      name: name,
+      email: email,
+      password: password
+    });
 
-      const userRes = await getUserLogged();
-      const user = await userRes.json();
-      if (user.data) {
-        navigate('/notes');
-      }
-    } catch (err) {
-      setError('Registration failed. Please try again.');
+    const responseBody = await response.json();
+
+    if (response.status === 200) {
+      await navigate({
+        pathname: '/login'
+      })
+    } else {
+      alert(responseBody.message)
     }
   };
 

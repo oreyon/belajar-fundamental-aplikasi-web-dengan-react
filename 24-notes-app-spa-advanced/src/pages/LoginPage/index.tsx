@@ -1,11 +1,7 @@
-import {  useCallback, useContext, useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import { useContext, useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import LanguageContext from "../../contexts/LanguageContext";
-
-// interface PropTypes {
-//   login: (email: string, password: string) => Promise<void>;
-// }
 
 const LoginPage = () => {
   const { authedUser, login} = useAuth();
@@ -30,7 +26,7 @@ const LoginPage = () => {
     if (authedUser) {
       navigate('/notes');
     }
-  }, [authedUser, navigate]);
+  }, [authedUser, navigate, login]);
   return (
     <section className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md">
       <h2 className="text-xl font-bold mb-4">

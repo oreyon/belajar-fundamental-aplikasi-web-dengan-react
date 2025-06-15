@@ -1,71 +1,39 @@
-import { useParams, useNavigate, Navigate } from 'react-router-dom';
-import type { Note } from '../../utils/data';
-import { useState, type FormEvent } from 'react';
+import { useParams, useNavigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { getSingleNote, type Note } from '../../libs/api/note.service';
+import { useEffect, useState } from 'react';
+import Loading from '../../components/ui/Loading';
 
-interface Props {
-	notes: Note[];
-	editNote: (id: number, title: string, body: string) => void;
-}
-
-const NotesDetailPage = (props: Props) => {
-	const { notes, editNote } = props;
+const NotesDetailPage = () => {
 	const { noteId } = useParams();
 	const navigate = useNavigate();
-	const note = notes.find((n: Note) => n.id === Number(noteId));
+	const [note, setNote] = useState<Note | null>(null);
+	const [loading, setLoading] = useState(true);
 
-	const [isEditing, setIsEditing] = useState(false);
-	const [title, setTitle] = useState(note ? note.title : '');
-	const [body, setBody] = useState(note ? note.body : '');
+	useEffect(() => {
+		const fetchNote = async () => {
+			try {
+				if (!noteId) return;
+				const res = await getSingleNote(noteId);
+				const data = await res.json();
+				setNote(data.data);
+			} catch (error) {
+				console.error('Failed to fetch note:', error);
+			} finally {
+				setLoading(false);
+			}
+		};
 
-	if (!note) {
-		return <Navigate to='/not-found' replace />;
-	}
+		fetchNote();
+	}, [noteId]);
 
-	const handleEditSubmit = (e: FormEvent) => {
-		e.preventDefault();
-		editNote(note.id, title, body);
-		setIsEditing(false);
-	};
+	if (loading) return <Loading />;
+
+	if (!note) return <p className="text-red-600">Note not found.</p>;
+
 
 	return (
 		<div className='max-w-2xl mx-auto mt-4 p-5 bg-white shadow-lg rounded-md'>
-			{isEditing ? (
-				<form onSubmit={handleEditSubmit}>
-					<div className='mb-4'>
-						<input
-							placeholder='Title'
-							type='text'
-							value={title}
-							onChange={(e) => setTitle(e.target.value)}
-							required
-							className='w-full p-3 text-base border border-quaternary rounded-md bg-tertiary'
-						/>
-					</div>
-					<div className='mb-4'>
-						<textarea
-							placeholder='Body'
-							value={body}
-							onChange={(e) => setBody(e.target.value)}
-							required
-							className='w-full p-3 text-base border border-quaternary rounded-md bg-tertiary'
-						/>
-					</div>
-					<div className='flex gap-2'>
-						<button
-							type='submit'
-							className='py-2 px-4 text-white bg-primary rounded-md hover:bg-quaternary'>
-							Save
-						</button>
-						<button
-							type='button'
-							onClick={() => setIsEditing(false)}
-							className='py-2 px-4 text-white bg-primary rounded-md hover:bg-quaternary'>
-							Cancel
-						</button>
-					</div>
-				</form>
-			) : (
 				<>
 					<h1 className='text-xl text-primary mb-4'>{note.title}</h1>
 					<p className='text-base mb-4'>{note.body}</p>
@@ -75,19 +43,12 @@ const NotesDetailPage = (props: Props) => {
 					<div className='flex gap-2'>
 						<button
 							type='button'
-							onClick={() => setIsEditing(true)}
-							className='py-2 px-4 text-white bg-primary rounded-md hover:bg-quaternary'>
-							Edit
-						</button>
-						<button
-							type='button'
 							onClick={() => navigate(-1)}
 							className='py-2 px-4 text-white bg-primary rounded-md hover:bg-quaternary'>
 							Back
 						</button>
 					</div>
 				</>
-			)}
 		</div>
 	);
 };
@@ -95,14 +56,14 @@ const NotesDetailPage = (props: Props) => {
 NotesDetailPage.propTypes = {
 	notes: PropTypes.arrayOf(
 		PropTypes.shape({
-			id: PropTypes.number.isRequired,
+			id: PropTypes.string.isRequired,
 			title: PropTypes.string.isRequired,
 			body: PropTypes.string.isRequired,
 			createdAt: PropTypes.string.isRequired,
 			archived: PropTypes.bool.isRequired,
+			owner: PropTypes.string.isRequired,
 		})
 	).isRequired,
-	editNote: PropTypes.func.isRequired,
 };
 
 export default NotesDetailPage;
