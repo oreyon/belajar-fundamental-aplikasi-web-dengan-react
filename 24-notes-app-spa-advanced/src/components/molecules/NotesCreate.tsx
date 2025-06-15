@@ -1,10 +1,12 @@
 import {
+	useContext,
 	useState,
 	type ChangeEvent,
 	type FormEvent,
 	type KeyboardEvent,
 } from 'react';
 import PropTypes from 'prop-types';
+import LanguageContext from '../../contexts/LanguageContext';
 
 interface PropTypes {
 	createNote: (title: string, body: string) => void;
@@ -12,6 +14,7 @@ interface PropTypes {
 
 const NotesCreate = (props: PropTypes) => {
 	const { createNote } = props;
+	const { language } = useContext(LanguageContext);
 	const [formCreateNote, setFormCreateNote] = useState({
 		title: '',
 		body: '',
@@ -27,8 +30,11 @@ const NotesCreate = (props: PropTypes) => {
 			[name]: value,
 		}));
 
-		if (name === 'title' && value.length > formCreateNote.maxTitleLength) {
-			alert(`Title cannot exceed ${formCreateNote.maxTitleLength} characters.`);
+		if (name === 'title' && value.length >= formCreateNote.maxTitleLength) {
+			setFormCreateNote((prev) => ({
+				...prev,
+				title: prev.title.slice(0, formCreateNote.maxTitleLength),
+			}));
 			return;
 		}
 	};
@@ -60,14 +66,17 @@ const NotesCreate = (props: PropTypes) => {
 					autoFocus
 					value={formCreateNote.title}
 					onChange={handleInputChange}
-					placeholder='Keep your thought here'
+					placeholder={
+						language === 'id' ? 'Apa yang terjadi?' : 'Whats Happening?'}
 					required
 					name='title'
 					className='w-full p-3 text-base border border-quaternary rounded-md bg-tertiary'
 				/>
 				<small className='text-sm text-gray-500'>
 					{formCreateNote.maxTitleLength - formCreateNote.title.length}{' '}
-					remaining
+					{language === 'id'
+						? 'karakter tersisa'
+						: 'characters remaining'}
 				</small>
 			</div>
 			<div className={'mb-4'}>
@@ -77,7 +86,8 @@ const NotesCreate = (props: PropTypes) => {
 					value={formCreateNote.body}
 					onChange={handleInputChange}
 					onKeyDown={handleKeyDown}
-					placeholder='Details'
+					placeholder={
+						language === 'id' ? 'Detail' : 'Details'}
 					required
 					className={
 						'w-full p-3 text-base border border-quaternary rounded-md bg-tertiary'
@@ -87,7 +97,7 @@ const NotesCreate = (props: PropTypes) => {
 			<button
 				type='submit'
 				className='py-3 px-5 text-lg text-white bg-primary rounded-md hover:bg-quaternary'>
-				Create Note
+				{language === 'id' ? 'Buat Catatan' : 'Create Note'}
 			</button>
 		</form>
 	);

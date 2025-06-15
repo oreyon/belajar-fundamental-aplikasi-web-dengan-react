@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import type { Note } from '../../utils/data';
 import NotesItem from '../molecules/NotesItem';
 import PropTypes from 'prop-types';
+import LanguageContext from '../../contexts/LanguageContext';
 
 interface PropTypes {
 	notes: Note[];
@@ -11,9 +13,10 @@ interface PropTypes {
 
 const NotesList = (props: PropTypes) => {
 	const { notes, editNote, deleteNote, toggleArchiveNote } = props;
+	const { language } = useContext(LanguageContext);
 
 	if (notes.length === 0) {
-		return <p>No notes available</p>;
+		return <p>{language === 'id' ? 'Tidak ada catatan' : 'No notes available'}</p>;
 	}
 
 	return (

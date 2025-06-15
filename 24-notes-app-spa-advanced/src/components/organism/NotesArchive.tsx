@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import type { Note } from '../../utils/data';
 import NotesList from './NotesList';
 import PropTypes from 'prop-types';
+import LanguageContext from '../../contexts/LanguageContext';
 
 interface PropTypes {
 	notes: Note[];
@@ -11,10 +13,11 @@ interface PropTypes {
 
 const NotesArchive = (props: PropTypes) => {
 	const { notes, editNote, deleteNote, toggleArchiveNote } = props;
+	const { language } = useContext(LanguageContext);
 
 	return (
 		<div>
-			<h2>Archived Notes</h2>
+			<h2>{language === 'id' ? 'Catatan Arsip' : 'Archived Notes'}</h2>
 			<NotesList
 				notes={notes}
 				editNote={editNote}
