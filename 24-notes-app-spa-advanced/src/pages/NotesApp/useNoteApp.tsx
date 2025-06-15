@@ -1,4 +1,3 @@
-// src/hooks/useNoteApp.ts
 import { useEffect, useState } from 'react';
 import {
 	addNote as apiAddNote,

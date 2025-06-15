@@ -1,5 +1,5 @@
 
-export const baseURL = 'https://notes-api.dicoding.dev/v1';
+export const baseURL:string = `${import.meta.env.VITE_API_URL}`;
 
 const customFetch = async (url: RequestInfo | URL, options?: RequestInit): Promise<Response> => {
   const fullUrl = `${baseURL}${url}`;

@@ -6,7 +6,6 @@ interface PropTypes {
   children: ReactNode;
 }
 
-
 const ThemeProvider = (props:PropTypes) => {
   const { children } = props;
   const [theme, setTheme] = useState<Theme>(

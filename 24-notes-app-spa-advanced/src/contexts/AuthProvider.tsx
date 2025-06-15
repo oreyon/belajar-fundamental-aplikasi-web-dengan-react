@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react"
+import { useCallback, useEffect, useState, type ReactNode } from "react"
 import { getAccessToken, getUserLogged, login, putAccessToken } from "../libs/api/note.service";
 import AuthContext, { type AuthedUser } from "./AuthContext";
 
