@@ -1,4 +1,3 @@
-import { Fragment } from 'react/jsx-runtime';
 import NotesNavigationView from '../organism/NotesNavigationView';
 import { Outlet } from 'react-router-dom';
 import { useContext } from 'react';

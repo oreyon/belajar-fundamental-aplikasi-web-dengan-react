@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import ThemeContext from '../../contexts/ThemeContext';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import LanguageContext from '../../contexts/LanguageContext';
+import { FiLogOut } from 'react-icons/fi';
 
 const NotesNavigationView = () => {
 	const { theme, toggleTheme } = useContext(ThemeContext);
@@ -53,6 +54,13 @@ const NotesNavigationView = () => {
 				className="px-3 py-1 border border-white rounded transition-colors hover:bg-quaternary"
 			>
 				{language === 'id' ? 'EN' : 'ID'}
+			</button>
+
+			<button type={"button"}>
+				<Link to="/logout" className="px-3 py-1 border border-white rounded transition-colors hover:bg-quaternary">
+					<FiLogOut className="inline-block" />
+					{language === 'id' ? 'Keluar' : 'Logout'}
+				</Link>
 			</button>
 		</div>
 	</header>

@@ -1,7 +1,8 @@
-import { useState, type FormEvent } from 'react';
+import { useContext, useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import type { Note } from '../../utils/data';
 import PropTypes from 'prop-types';
+import LanguageContext from '../../contexts/LanguageContext';
 
 interface PropTypes {
 	note: Note;
@@ -12,6 +13,7 @@ interface PropTypes {
 
 const NotesItem = (props: PropTypes) => {
 	const { note, editNote, deleteNote, toggleArchiveNote } = props;
+	const { language } = useContext(LanguageContext);
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [newTitle, setNewTitle] = useState(note.title);
@@ -35,7 +37,7 @@ const NotesItem = (props: PropTypes) => {
               type='text'
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              placeholder='Whats Happening?!'
+              placeholder={language === 'id' ? 'Judul' : 'Title'}
               required
               className='w-full p-3 text-base border border-quaternary rounded-md bg-tertiary text-[--font-color]'
             />
@@ -44,7 +46,7 @@ const NotesItem = (props: PropTypes) => {
             <textarea
               value={newBody}
               onChange={(e) => setNewBody(e.target.value)}
-              placeholder='Details'
+              placeholder={language === 'id' ? 'Isi catatan' : 'Note content'}
               required
               className='w-full p-3 text-base border border-quaternary rounded-md bg-tertiary text-[--font-color]'
             />
@@ -54,14 +56,14 @@ const NotesItem = (props: PropTypes) => {
               type='submit'
               className='py-2 px-4 text-base text-white bg-primary rounded-md hover:bg-quaternary'
             >
-              Save
+              {language === 'id' ? 'Simpan' : 'Save'}
             </button>
             <button
               type='button'
               className='py-2 px-4 text-base text-white bg-primary rounded-md hover:bg-quaternary'
               onClick={() => setIsEditing(false)}
             >
-              Cancel
+              {language === 'id' ? 'Batal' : 'Cancel'}
             </button>
           </div>
         </form>
@@ -72,7 +74,7 @@ const NotesItem = (props: PropTypes) => {
           </h3>
           <p className='text-base mb-4 text-[--font-color]'>{note.body}</p>
           <p className='text-sm mb-3'>
-            Created: {new Date(note.createdAt).toLocaleDateString()}
+            {language === 'id' ? 'Dibuat' : 'Created'}: {new Date(note.createdAt).toLocaleDateString()}
           </p>
           <div className='flex gap-2'>
             <button
@@ -80,21 +82,21 @@ const NotesItem = (props: PropTypes) => {
               className='py-2 px-4 text-base text-white bg-primary rounded-md hover:bg-quaternary'
               onClick={() => setIsEditing(true)}
             >
-              Edit
+              {language === 'id' ? 'Ubah' : 'Edit'}
             </button>
             <button
               type='button'
               className='py-2 px-4 text-base text-white bg-primary rounded-md hover:bg-quaternary'
               onClick={() => toggleArchiveNote(note.id)}
             >
-              {note.archived ? 'Unarchive' : 'Archive'}
+							{language === 'id' ? (note.archived ? 'Batalkan Arsip' : 'Arsipkan') : (note.archived ? 'Unarchive' : 'Archive')}
             </button>
             <button
               type='button'
               className='py-2 px-4 text-base text-white bg-primary rounded-md hover:bg-quaternary'
               onClick={() => deleteNote(note.id)}
             >
-              Delete
+              {language === 'id' ? 'Hapus' : 'Delete'}
             </button>
           </div>
         </>
