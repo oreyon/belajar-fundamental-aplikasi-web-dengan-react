@@ -7,63 +7,60 @@ interface PropTypes {
 }
 
 const AuthProvider = (props:PropTypes) => {
-  const { children } = props;
+   const { children } = props;
   const [authedUser, setAuthedUser] = useState<AuthedUser | null>(null);
   const [initializing, setInitializing] = useState(true);
 
-  const handleLogin = useCallback(async (email: string, password: string) => {
-    const response = await login({ email, password });
-    const result = await response.json();
-
-    const accessToken = result?.data?.accessToken;
-    if (!accessToken) throw new Error("Login failed: no access token");
-
-    putAccessToken(accessToken);
-
-    const userResponse = await getUserLogged();
-    const userResult = await userResponse.json();
-    setAuthedUser(userResult.data);
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const token = getAccessToken();
+      if (token) {
+        try {
+          const response = await getUserLogged();
+          if (response.status === 200) {
+            const userData = await response.json();
+            setAuthedUser(userData.data);
+          }
+        } catch (error) {
+          console.error("Failed to fetch user:", error);
+        }
+      }
+      setInitializing(false);
+    };
+    checkAuthStatus();
   }, []);
 
-  const logout = useCallback(() => {
+  const handleLogin = useCallback(async (email: string, password: string) => {
+    const response = await login({ email, password });
+    const responseBody = await response.json();
+
+    if (response.status === 200) {
+      putAccessToken(responseBody.data.accessToken);
+      const getCurrentUser = await getUserLogged();
+      const userData = await getCurrentUser.json();
+      setAuthedUser(userData.data);
+    } else {
+      throw new Error(responseBody.message || "Login failed");
+    }
+  }, []);
+
+  const handleLogout = useCallback(() => {
     putAccessToken("");
     setAuthedUser(null);
   }, []);
 
-  const initialize = useCallback(async () => {
-    const token = getAccessToken();
-    if (!token) {
-      setInitializing(false);
-      return;
-    }
 
-    try {
-      const response = await getUserLogged();
-      const result = await response.json();
-      setAuthedUser(result.data);
-    } catch (err) {
-      console.error("Auth initialization failed:", err);
-      putAccessToken("");
-      setAuthedUser(null);
-    } finally {
-      setInitializing(false);
-    }
-  }, []);
+  const contextValue = {
+    authedUser,
+    initializing,
+    login: handleLogin,
+    logout: handleLogout
+  };
 
-  useEffect(() => {
-    initialize();
-  }, [initialize]);
-
-
-	return <AuthContext.Provider 
-  value={
-    {
-      authedUser,
-      initializing,
-      login: handleLogin,
-      logout
-    }
-  }>
-    {children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={contextValue}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 export default AuthProvider

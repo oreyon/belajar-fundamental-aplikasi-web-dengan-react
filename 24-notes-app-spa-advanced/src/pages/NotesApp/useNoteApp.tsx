@@ -37,43 +37,53 @@ export const useNoteApp = () => {
 		fetchNotes();
 	}, []);
 
-	const addNote = async (title: string, body: string) => {
-		try {
-			await apiAddNote({ title, body });
-			await fetchNotes();
-		} catch (err) {
-			console.error('Failed to add note:', err);
-		}
-	};
-
-	const deleteNote = async (id: string) => {
-		try {
-			await apiDeleteNote(id);
-			await fetchNotes();
-		} catch (err) {
-			console.error('Failed to delete note:', err);
-		}
-	};
-
-	const toggleArchiveNote = async (id: string, archived: boolean) => {
-		try {
-			if (archived) {
-				await apiUnarchiveNote(id);
-			} else {
-				await apiArchiveNote(id);
-			}
-			await fetchNotes();
-		} catch (err) {
-			console.error('Failed to toggle archive:', err);
-		}
-	};
+	// const addNote = async (title: string, body: string) => {
+	// 	try {
+	// 		await apiAddNote({ title, body });
+	// 		await fetchNotes();
+	// 	} catch (err) {
+	// 		console.error('Failed to add note:', err);
+	// 	}
+	// };
+	//
+	// const deleteNote = async (id: string) => {
+	// 	try {
+	// 		await apiDeleteNote(id);
+	// 		await fetchNotes();
+	// 	} catch (err) {
+	// 		console.error('Failed to delete note:', err);
+	// 	}
+	// };
+	//
+	// const toggleArchiveNote = async (id: string, archived: boolean) => {
+	// 	try {
+	// 		if (archived) {
+	// 			await apiUnarchiveNote(id);
+	// 		} else {
+	// 			await apiArchiveNote(id);
+	// 		}
+	// 		await fetchNotes();
+	// 	} catch (err) {
+	// 		console.error('Failed to toggle archive:', err);
+	// 	}
+	// }; 
 
 	return {
 		activeNotes,
 		archivedNotes,
 		loading,
-		addNote,
-		deleteNote,
-		toggleArchiveNote,
+		addNote: async (title: string, body: string) => {
+			await apiAddNote({ title, body });
+			await fetchNotes();
+		},
+		deleteNote: async (id: string) => {
+			await apiDeleteNote(id);
+			await fetchNotes();
+		},
+		toggleArchiveNote: async (id: string, archived: boolean) => {
+			if (archived) await apiUnarchiveNote(id);
+			else await apiArchiveNote(id);
+			await fetchNotes();
+		}
 	};
 };

@@ -1,20 +1,9 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import { Fragment } from "react";
+import LogoutView from "../../components/views/LogoutView";
 
 const LogoutPage = () => {
-  const navigate = useNavigate();
-  const { authedUser, logout } = useAuth();
-
-  useEffect(() => {
-    if (authedUser) {
-      logout();
-      navigate("/login", { replace: true });
-    }
-  }, [authedUser]);
-
-  return <Fragment />;
+ return (
+    <LogoutView />
+ )
 };
 
 export default LogoutPage;

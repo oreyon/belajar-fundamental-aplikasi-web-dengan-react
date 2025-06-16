@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import DashboardLayout from '../../components/layouts/DashboardLayout';
 import NotesNotFound from '../../components/views/NotesNotFound';
 import NotesCreatePage from '../NotesCreatePage/NotesCreatePage';
@@ -14,78 +14,74 @@ import { useNoteApp } from './useNoteApp';
 
 const NotesApp = () => {
 const {
-	activeNotes,
-	archivedNotes,
-	addNote,
-	deleteNote,
-	toggleArchiveNote
-} = useNoteApp();
+    activeNotes,
+    archivedNotes,
+    addNote,
+    deleteNote,
+    toggleArchiveNote
+  } = useNoteApp();
 
-	return (
-		<Routes>
-				<Route path="/" element={<Navigate to="/notes" replace={true}/>} />
- 
-				<Route element={
-					<AuthRedirect>
-						<AuthLayout />
-					</AuthRedirect>
-					}>
-					 <Route path={"register"} element={<RegisterPage />}/>
-					 <Route path={"login"} element={<LoginPage />}/>
-				</Route>
-				
-				
-					<Route element={
-						<ProtectedRoute>
-							<DashboardLayout />
-						</ProtectedRoute>
-						}>
-						<Route
-							path="/notes"
-							index
-							element={
-							<NotesAppHomePage
-										notes={activeNotes}
-										addNote={addNote}
-										deleteNote={deleteNote}
-										toggleArchiveNote={(id:string) => {
-											const note = activeNotes.find(note => note.id === id);
-											if (!note) return;
-											toggleArchiveNote(id, note.archived);
-										}}
-									/>
-								}/>
-						<Route
-							path="/notes/create"
-							element={
-								<NotesCreatePage addNote={addNote} />
-							}/>
-						<Route
-							path="/notes/archive"
-							element={
-									<NotesArchivePage
-										notes={archivedNotes}
-										deleteNote={deleteNote}
-										toggleArchiveNote={(id:string) => {
-											const note = archivedNotes.find(note => note.id === id);
-											if (!note) return;
-											toggleArchiveNote(id, note.archived);
-										}}
-									/>
-							}
-						/>
-						<Route
-							path="/notes/:noteId"	
-							element={
-								<NotesDetailPage />
-							}/>
-						<Route
-							path="/logout"
-							element={<LogoutPage/>}/>
-					</Route>
-				
-				<Route path="*" element={<NotesNotFound />} />
-    </Routes>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/notes" replace />} />
+
+        <Route
+          element={
+            <AuthRedirect>
+              <AuthLayout />
+            </AuthRedirect>
+          }
+        >
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="login" element={<LoginPage />} />
+        </Route>
+
+        <Route
+          path="/notes"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route
+            index
+            element={
+              <NotesAppHomePage
+                notes={activeNotes}
+                addNote={addNote}
+                deleteNote={deleteNote}
+                toggleArchiveNote={(id: string) => {
+                  const note = activeNotes.find(note => note.id === id);
+                  if (!note) return;
+                  toggleArchiveNote(id, note.archived);
+                }}
+              />
+            }
+          />
+          <Route path="create" element={<NotesCreatePage addNote={addNote} />} />
+          <Route
+            path="archive"
+            element={
+              <NotesArchivePage
+                notes={archivedNotes}
+                deleteNote={deleteNote}
+                toggleArchiveNote={(id: string) => {
+                  const note = archivedNotes.find(note => note.id === id);
+                  if (!note) return;
+                  toggleArchiveNote(id, note.archived);
+                }}
+              />
+            }
+          />
+          <Route path=":noteId" element={<NotesDetailPage />} />
+        </Route>
+        
+        <Route path="/logout" element={<LogoutPage />} />
+        <Route path="*" element={<NotesNotFound />} />
+      </Routes>
+    </BrowserRouter>
 	);
 };
 

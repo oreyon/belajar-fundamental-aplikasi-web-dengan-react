@@ -10,7 +10,7 @@ interface PropTypes {
 
 const NotesArchiveView = (props: PropTypes) => {
 	const { notes, deleteNote, toggleArchiveNote } = props;
-	const archivedNotes = notes.filter((note: Note) => note.archived);
+	const archivedNotes = notes?.filter((note: Note) => note.archived) ?? [];
 
 	return (
 		<div className={'max-w-2xl w-4/5 mx-auto p-4'}>
